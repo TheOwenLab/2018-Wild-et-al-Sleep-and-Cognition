@@ -1,0 +1,6 @@
+data/
+__pycache__/
+notebooks/.ipynb_checkpoints/
+lib/__pycache__/
+.RData
+.Rhistory
