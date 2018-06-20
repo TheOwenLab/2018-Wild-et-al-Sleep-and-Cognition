@@ -30,7 +30,7 @@ idx = pd.IndexSlice
 
 # List of all columns in the data frame that have scores
 score_columns = ss.score_columns() + [score+"_score" for score in ss.COMPOSITE_SCORE_NAMES]
-domain_names  = [domain+"_score" for domain in ss.FACTOR_NAMES]
+domain_names  = [domain+"_score" for domain in ss.COMPOSITE_SCORE_NAMES[0:-1]]
 
 
 # In[3]:

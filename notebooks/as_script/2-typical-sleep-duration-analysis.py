@@ -182,15 +182,20 @@ xy = np.vstack([x,y])
 z = gaussian_kde(xy,bw_method=0.7)(xy)
 fig, axs = plt.subplots(figsize=(4.35,3))
 axs.scatter(x+sleep_offset,y,c=z,s=120,edgecolor='')
-axs.fill_between(overall_prediction.index+sleep_offset, overall_prediction['mean_ci_lower'], overall_prediction['mean_ci_upper'], color=ss.COMPOSITE_SCORE_COLORS[-1], alpha=0.5)
-axs.plot(overall_prediction.index+sleep_offset, overall_prediction['mean'], color=ss.COMPOSITE_SCORE_COLORS[-1], linewidth=3)
+axs.fill_between(overall_prediction.index+sleep_offset, 
+                 overall_prediction['mean_ci_lower'], 
+                 overall_prediction['mean_ci_upper'], 
+                 color=ss.COMPOSITE_SCORE_COLORS[-1], alpha=0.5)
+axs.plot(overall_prediction.index+sleep_offset, 
+         overall_prediction['mean'], 
+         color=ss.COMPOSITE_SCORE_COLORS[-1], linewidth=3)
 axs.set_xlabel("Typical Sleep Duration (hours)")
 axs.set_ylabel("Overall Score (SDs)")
 plt.show()
 fig.savefig('../images/Figure2.pdf', format='pdf')
 
 
-# In[19]:
+# In[15]:
 
 
 # Plot the predicted score as a function of reported sleep duration
@@ -204,8 +209,13 @@ for score_index, score_model in enumerate(estimated_models):
     score_name  = ss.COMPOSITE_SCORE_NAMES[score_index]
     prediction  = ss.get_prediction_and_confidence(score_model, 'typical_sleep_duration').summary_frame()
     
-    axs[plot_index].fill_between(prediction.index+sleep_offset, prediction['mean_ci_lower'], prediction['mean_ci_upper'], alpha=0.3, color=score_color)
-    axs[plot_index].plot(prediction.index+sleep_offset, prediction['mean'], c=score_color, label=labels[score_index]+score_name, linewidth=3)
+    axs[plot_index].fill_between(prediction.index+sleep_offset, 
+                                 prediction['mean_ci_lower'], 
+                                 prediction['mean_ci_upper'], 
+                                 alpha=0.3, color=score_color)
+    axs[plot_index].plot(prediction.index+sleep_offset, 
+                         prediction['mean'], 
+                         c=score_color, label=labels[score_index]+score_name, linewidth=3)
 
     vertex    = ss.calculate_parabola_vertex(score_model, 'typical_sleep_duration')
     vertex_CI = ss.fieller_ci(score_model, 'typical_sleep_duration')+sleep_offset
@@ -226,7 +236,7 @@ plt.tight_layout()
 fig.savefig('../images/Figure3.pdf', format='pdf')
 
 
-# In[17]:
+# In[16]:
 
 
 # Plot the difference betwen the predicted score curve and the optimum of that curve.
@@ -294,7 +304,7 @@ plt.tight_layout()
 fig.savefig('../images/Figure4.pdf', format='pdf')
 
 
-# In[18]:
+# In[17]:
 
 
 # How many people slept an amount below this detectable threshold?
@@ -303,7 +313,7 @@ percentage = data[data['typical_sleep_duration']<(cutoff-sleep_offset)].shape[0]
 print('%% of sample who reported slept less than %.02f hours: %.02f%%'%(cutoff, percentage))
 
 
-# In[19]:
+# In[18]:
 
 
 # Generate a plot of predicted domain score vs age.
@@ -312,8 +322,12 @@ for score_index, score_model in enumerate(estimated_models):
     score_color = ss.COMPOSITE_SCORE_COLORS[score_index]
     score_name  = ss.COMPOSITE_SCORE_NAMES[score_index]    
     prediction  = ss.get_prediction_and_confidence(score_model, 'age_at_test').summary_frame()
-    axs.fill_between(prediction.index+age_offset, prediction['mean_ci_lower'], prediction['mean_ci_upper'], alpha=0.3, color=score_color)
-    axs.plot(prediction.index+age_offset, prediction['mean'], label=score_name, linewidth=3, color=score_color)
+    axs.fill_between(prediction.index+age_offset, prediction['mean_ci_lower'], 
+                     prediction['mean_ci_upper'], 
+                     alpha=0.3, color=score_color)
+    axs.plot(prediction.index+age_offset, 
+             prediction['mean'], 
+             label=score_name, linewidth=3, color=score_color)
 
 axs.set_xlabel('Age at Test (Years)')
 axs.set_ylabel('Score (stdevs)')

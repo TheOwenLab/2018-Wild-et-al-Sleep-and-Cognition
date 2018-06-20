@@ -11843,7 +11843,7 @@ div#notebook {
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># List of all columns in the data frame that have scores</span>
 <span class="n">score_columns</span> <span class="o">=</span> <span class="n">ss</span><span class="o">.</span><span class="n">score_columns</span><span class="p">()</span> <span class="o">+</span> <span class="p">[</span><span class="n">score</span><span class="o">+</span><span class="s2">&quot;_score&quot;</span> <span class="k">for</span> <span class="n">score</span> <span class="ow">in</span> <span class="n">ss</span><span class="o">.</span><span class="n">COMPOSITE_SCORE_NAMES</span><span class="p">]</span>
-<span class="n">domain_names</span>  <span class="o">=</span> <span class="p">[</span><span class="n">domain</span><span class="o">+</span><span class="s2">&quot;_score&quot;</span> <span class="k">for</span> <span class="n">domain</span> <span class="ow">in</span> <span class="n">ss</span><span class="o">.</span><span class="n">FACTOR_NAMES</span><span class="p">]</span>
+<span class="n">domain_names</span>  <span class="o">=</span> <span class="p">[</span><span class="n">domain</span><span class="o">+</span><span class="s2">&quot;_score&quot;</span> <span class="k">for</span> <span class="n">domain</span> <span class="ow">in</span> <span class="n">ss</span><span class="o">.</span><span class="n">COMPOSITE_SCORE_NAMES</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]]</span>
 </pre></div>
 
 </div>
@@ -11955,7 +11955,7 @@ Effective alpha: 0.00350
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>&lt;matplotlib.axes._subplots.AxesSubplot at 0x7fe6c6638f60&gt;</pre>
+<pre>&lt;matplotlib.axes._subplots.AxesSubplot at 0x7f3896d30e10&gt;</pre>
 </div>
 
 </div>
@@ -12460,43 +12460,6 @@ Name: sleep_delta, dtype: float64</pre>
   </thead>
   <tbody>
     <tr>
-      <th rowspan="4" valign="top">np.power(typical_sleep_duration, 2)</th>
-      <th>STM</th>
-      <td>-0.0076</td>
-      <td>0.004</td>
-      <td>-2.001</td>
-      <td>0.045</td>
-      <td>-0.015</td>
-      <td>-0.000</td>
-    </tr>
-    <tr>
-      <th>Reasoning</th>
-      <td>-0.0233</td>
-      <td>0.004</td>
-      <td>-6.285</td>
-      <td>0.000</td>
-      <td>-0.031</td>
-      <td>-0.016</td>
-    </tr>
-    <tr>
-      <th>Verbal</th>
-      <td>-0.0189</td>
-      <td>0.004</td>
-      <td>-4.596</td>
-      <td>0.000</td>
-      <td>-0.027</td>
-      <td>-0.011</td>
-    </tr>
-    <tr>
-      <th>Overall</th>
-      <td>-0.0274</td>
-      <td>0.004</td>
-      <td>-7.611</td>
-      <td>0.000</td>
-      <td>-0.034</td>
-      <td>-0.020</td>
-    </tr>
-    <tr>
       <th rowspan="4" valign="top">typical_sleep_duration</th>
       <th>STM</th>
       <td>0.0170</td>
@@ -12532,6 +12495,43 @@ Name: sleep_delta, dtype: float64</pre>
       <td>0.000</td>
       <td>0.036</td>
       <td>0.066</td>
+    </tr>
+    <tr>
+      <th rowspan="4" valign="top">np.power(typical_sleep_duration, 2)</th>
+      <th>STM</th>
+      <td>-0.0076</td>
+      <td>0.004</td>
+      <td>-2.001</td>
+      <td>0.045</td>
+      <td>-0.015</td>
+      <td>-0.000</td>
+    </tr>
+    <tr>
+      <th>Reasoning</th>
+      <td>-0.0233</td>
+      <td>0.004</td>
+      <td>-6.285</td>
+      <td>0.000</td>
+      <td>-0.031</td>
+      <td>-0.016</td>
+    </tr>
+    <tr>
+      <th>Verbal</th>
+      <td>-0.0189</td>
+      <td>0.004</td>
+      <td>-4.596</td>
+      <td>0.000</td>
+      <td>-0.027</td>
+      <td>-0.011</td>
+    </tr>
+    <tr>
+      <th>Overall</th>
+      <td>-0.0274</td>
+      <td>0.004</td>
+      <td>-7.611</td>
+      <td>0.000</td>
+      <td>-0.034</td>
+      <td>-0.020</td>
     </tr>
     <tr>
       <th rowspan="4" valign="top">sleep_delta</th>
@@ -12608,80 +12608,6 @@ Name: sleep_delta, dtype: float64</pre>
       <td>-0.006</td>
     </tr>
     <tr>
-      <th rowspan="4" valign="top">typical_sleep_duration:sleep_delta</th>
-      <th>STM</th>
-      <td>0.0081</td>
-      <td>0.005</td>
-      <td>1.535</td>
-      <td>0.125</td>
-      <td>-0.002</td>
-      <td>0.019</td>
-    </tr>
-    <tr>
-      <th>Reasoning</th>
-      <td>-0.0078</td>
-      <td>0.005</td>
-      <td>-1.505</td>
-      <td>0.132</td>
-      <td>-0.018</td>
-      <td>0.002</td>
-    </tr>
-    <tr>
-      <th>Verbal</th>
-      <td>-0.0026</td>
-      <td>0.006</td>
-      <td>-0.453</td>
-      <td>0.651</td>
-      <td>-0.014</td>
-      <td>0.009</td>
-    </tr>
-    <tr>
-      <th>Overall</th>
-      <td>-0.0012</td>
-      <td>0.005</td>
-      <td>-0.236</td>
-      <td>0.814</td>
-      <td>-0.011</td>
-      <td>0.009</td>
-    </tr>
-    <tr>
-      <th rowspan="4" valign="top">np.power(typical_sleep_duration, 2):sleep_delta</th>
-      <th>STM</th>
-      <td>0.0039</td>
-      <td>0.002</td>
-      <td>1.979</td>
-      <td>0.048</td>
-      <td>3.79e-05</td>
-      <td>0.008</td>
-    </tr>
-    <tr>
-      <th>Reasoning</th>
-      <td>0.0041</td>
-      <td>0.002</td>
-      <td>2.146</td>
-      <td>0.032</td>
-      <td>0.000</td>
-      <td>0.008</td>
-    </tr>
-    <tr>
-      <th>Verbal</th>
-      <td>5.733e-05</td>
-      <td>0.002</td>
-      <td>0.027</td>
-      <td>0.979</td>
-      <td>-0.004</td>
-      <td>0.004</td>
-    </tr>
-    <tr>
-      <th>Overall</th>
-      <td>0.0049</td>
-      <td>0.002</td>
-      <td>2.641</td>
-      <td>0.008</td>
-      <td>0.001</td>
-      <td>0.009</td>
-    </tr>
-    <tr>
       <th rowspan="4" valign="top">typical_sleep_duration:np.power(sleep_delta, 2)</th>
       <th>STM</th>
       <td>0.0018</td>
@@ -12754,6 +12680,80 @@ Name: sleep_delta, dtype: float64</pre>
       <td>0.012</td>
       <td>0.000</td>
       <td>0.001</td>
+    </tr>
+    <tr>
+      <th rowspan="4" valign="top">typical_sleep_duration:sleep_delta</th>
+      <th>STM</th>
+      <td>0.0081</td>
+      <td>0.005</td>
+      <td>1.535</td>
+      <td>0.125</td>
+      <td>-0.002</td>
+      <td>0.019</td>
+    </tr>
+    <tr>
+      <th>Reasoning</th>
+      <td>-0.0078</td>
+      <td>0.005</td>
+      <td>-1.505</td>
+      <td>0.132</td>
+      <td>-0.018</td>
+      <td>0.002</td>
+    </tr>
+    <tr>
+      <th>Verbal</th>
+      <td>-0.0026</td>
+      <td>0.006</td>
+      <td>-0.453</td>
+      <td>0.651</td>
+      <td>-0.014</td>
+      <td>0.009</td>
+    </tr>
+    <tr>
+      <th>Overall</th>
+      <td>-0.0012</td>
+      <td>0.005</td>
+      <td>-0.236</td>
+      <td>0.814</td>
+      <td>-0.011</td>
+      <td>0.009</td>
+    </tr>
+    <tr>
+      <th rowspan="4" valign="top">np.power(typical_sleep_duration, 2):sleep_delta</th>
+      <th>STM</th>
+      <td>0.0039</td>
+      <td>0.002</td>
+      <td>1.979</td>
+      <td>0.048</td>
+      <td>3.79e-05</td>
+      <td>0.008</td>
+    </tr>
+    <tr>
+      <th>Reasoning</th>
+      <td>0.0041</td>
+      <td>0.002</td>
+      <td>2.146</td>
+      <td>0.032</td>
+      <td>0.000</td>
+      <td>0.008</td>
+    </tr>
+    <tr>
+      <th>Verbal</th>
+      <td>5.733e-05</td>
+      <td>0.002</td>
+      <td>0.027</td>
+      <td>0.979</td>
+      <td>-0.004</td>
+      <td>0.004</td>
+    </tr>
+    <tr>
+      <th>Overall</th>
+      <td>0.0049</td>
+      <td>0.002</td>
+      <td>2.641</td>
+      <td>0.008</td>
+      <td>0.001</td>
+      <td>0.009</td>
     </tr>
   </tbody>
 </table>

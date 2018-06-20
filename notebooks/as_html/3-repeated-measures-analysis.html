@@ -11843,7 +11843,7 @@ div#notebook {
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># List of all columns in the data frame that have scores</span>
 <span class="n">score_columns</span> <span class="o">=</span> <span class="n">ss</span><span class="o">.</span><span class="n">score_columns</span><span class="p">()</span> <span class="o">+</span> <span class="p">[</span><span class="n">score</span><span class="o">+</span><span class="s2">&quot;_score&quot;</span> <span class="k">for</span> <span class="n">score</span> <span class="ow">in</span> <span class="n">ss</span><span class="o">.</span><span class="n">COMPOSITE_SCORE_NAMES</span><span class="p">]</span>
-<span class="n">domain_names</span>  <span class="o">=</span> <span class="p">[</span><span class="n">domain</span><span class="o">+</span><span class="s2">&quot;_score&quot;</span> <span class="k">for</span> <span class="n">domain</span> <span class="ow">in</span> <span class="n">ss</span><span class="o">.</span><span class="n">FACTOR_NAMES</span><span class="p">]</span>
+<span class="n">domain_names</span>  <span class="o">=</span> <span class="p">[</span><span class="n">domain</span><span class="o">+</span><span class="s2">&quot;_score&quot;</span> <span class="k">for</span> <span class="n">domain</span> <span class="ow">in</span> <span class="n">ss</span><span class="o">.</span><span class="n">COMPOSITE_SCORE_NAMES</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]]</span>
 </pre></div>
 
 </div>
@@ -11951,69 +11951,69 @@ div#notebook {
   </thead>
   <tbody>
     <tr>
-      <th>(46640, STM)</th>
-      <td>-13.689142</td>
-      <td>Not during the past month</td>
-      <td>Not during the past month</td>
-      <td>High School Diploma</td>
-      <td>Male</td>
-      <td>1.590364</td>
-      <td>0.021625</td>
-      <td>STM</td>
-      <td>46640.0</td>
+      <th>(50487, STM)</th>
+      <td>-11.689142</td>
+      <td>Once or twice a week</td>
+      <td>Less than once a week</td>
+      <td>Bachelor's Degree</td>
+      <td>Female</td>
       <td>0.590364</td>
+      <td>-0.219037</td>
+      <td>STM</td>
+      <td>50487.0</td>
+      <td>1.590364</td>
     </tr>
     <tr>
-      <th>(23579, STM)</th>
-      <td>-15.689142</td>
-      <td>Not during the past month</td>
+      <th>(47988, STM)</th>
+      <td>-11.689142</td>
+      <td>Once or twice a week</td>
       <td>Not during the past month</td>
       <td>Bachelor's Degree</td>
-      <td>Male</td>
-      <td>0.840364</td>
-      <td>0.878897</td>
+      <td>Female</td>
+      <td>3.090364</td>
+      <td>1.724834</td>
       <td>STM</td>
-      <td>23579.0</td>
+      <td>47988.0</td>
+      <td>-0.409636</td>
+    </tr>
+    <tr>
+      <th>(30178, STM)</th>
+      <td>-9.689142</td>
+      <td>Not during the past month</td>
+      <td>Not during the past month</td>
+      <td>Doctoral or Professional Degree</td>
+      <td>Male</td>
+      <td>1.090364</td>
+      <td>0.417106</td>
+      <td>STM</td>
+      <td>30178.0</td>
+      <td>-0.409636</td>
+    </tr>
+    <tr>
+      <th>(70685, STM)</th>
+      <td>10.310858</td>
+      <td>Not during the past month</td>
+      <td>Not during the past month</td>
+      <td>High School Diploma</td>
+      <td>Female</td>
+      <td>0.590364</td>
+      <td>-0.764354</td>
+      <td>STM</td>
+      <td>70685.0</td>
       <td>0.590364</td>
     </tr>
     <tr>
-      <th>(29132, STM)</th>
-      <td>14.310858</td>
+      <th>(52792, STM)</th>
+      <td>-10.689142</td>
+      <td>Less than once a week</td>
       <td>Not during the past month</td>
-      <td>Not during the past month</td>
-      <td>Master's Degree</td>
+      <td>Bachelor's Degree</td>
       <td>Female</td>
-      <td>1.090364</td>
-      <td>-0.184048</td>
+      <td>2.590364</td>
+      <td>0.245037</td>
       <td>STM</td>
-      <td>29132.0</td>
-      <td>-0.409636</td>
-    </tr>
-    <tr>
-      <th>(56835, STM)</th>
-      <td>-9.689142</td>
-      <td>Less than once a week</td>
-      <td>Less than once a week</td>
-      <td>High School Diploma</td>
-      <td>Male</td>
-      <td>-1.659636</td>
-      <td>0.825750</td>
-      <td>STM</td>
-      <td>56835.0</td>
-      <td>-0.409636</td>
-    </tr>
-    <tr>
-      <th>(35801, STM)</th>
-      <td>14.310858</td>
-      <td>Not during the past month</td>
-      <td>Not during the past month</td>
-      <td>High School Diploma</td>
-      <td>Male</td>
-      <td>1.090364</td>
-      <td>-0.673336</td>
-      <td>STM</td>
-      <td>35801.0</td>
-      <td>-0.409636</td>
+      <td>52792.0</td>
+      <td>1.590364</td>
     </tr>
   </tbody>
 </table>
@@ -12181,6 +12181,24 @@ div#notebook {
   <th>education[T.None]</th>                                                 <td>-0.127</td>   <td>0.062</td>  <td>-2.042</td>  <td>0.041</td> <td>-0.249</td> <td>-0.005</td>
 </tr>
 <tr>
+  <th>anxiety[T.Less than once a week]</th>                                   <td>0.021</td>   <td>0.039</td>   <td>0.522</td>  <td>0.601</td> <td>-0.056</td>  <td>0.097</td>
+</tr>
+<tr>
+  <th>anxiety[T.Not during the past month]</th>                               <td>0.056</td>   <td>0.039</td>   <td>1.441</td>  <td>0.149</td> <td>-0.020</td>  <td>0.133</td>
+</tr>
+<tr>
+  <th>anxiety[T.Once or twice a week]</th>                                    <td>0.035</td>   <td>0.039</td>   <td>0.888</td>  <td>0.375</td> <td>-0.042</td>  <td>0.112</td>
+</tr>
+<tr>
+  <th>anxiety[T.Three or more times a week]</th>                              <td>0.045</td>   <td>0.041</td>   <td>1.105</td>  <td>0.269</td> <td>-0.035</td>  <td>0.124</td>
+</tr>
+<tr>
+  <th>gender[T.Male]</th>                                                     <td>0.014</td>   <td>0.019</td>   <td>0.740</td>  <td>0.459</td> <td>-0.023</td>  <td>0.051</td>
+</tr>
+<tr>
+  <th>gender[T.Other]</th>                                                    <td>0.177</td>   <td>0.108</td>   <td>1.647</td>  <td>0.100</td> <td>-0.034</td>  <td>0.389</td>
+</tr>
+<tr>
   <th>score_type[T.STM]</th>                                                 <td>-0.276</td>   <td>0.061</td>  <td>-4.544</td>  <td>0.000</td> <td>-0.395</td> <td>-0.157</td>
 </tr>
 <tr>
@@ -12199,46 +12217,16 @@ div#notebook {
   <th>depression[T.Three or more times a week]</th>                          <td>-0.092</td>   <td>0.049</td>  <td>-1.889</td>  <td>0.059</td> <td>-0.188</td>  <td>0.003</td>
 </tr>
 <tr>
-  <th>gender[T.Male]</th>                                                     <td>0.014</td>   <td>0.019</td>   <td>0.740</td>  <td>0.459</td> <td>-0.023</td>  <td>0.051</td>
+  <th>gender[T.Male]:score_type[T.STM]</th>                                   <td>0.210</td>   <td>0.026</td>   <td>7.918</td>  <td>0.000</td>  <td>0.158</td>  <td>0.262</td>
 </tr>
 <tr>
-  <th>gender[T.Other]</th>                                                    <td>0.177</td>   <td>0.108</td>   <td>1.647</td>  <td>0.100</td> <td>-0.034</td>  <td>0.389</td>
+  <th>gender[T.Other]:score_type[T.STM]</th>                                 <td>-0.253</td>   <td>0.152</td>  <td>-1.661</td>  <td>0.097</td> <td>-0.552</td>  <td>0.046</td>
 </tr>
 <tr>
-  <th>anxiety[T.Less than once a week]</th>                                   <td>0.021</td>   <td>0.039</td>   <td>0.522</td>  <td>0.601</td> <td>-0.056</td>  <td>0.097</td>
+  <th>gender[T.Male]:score_type[T.Verbal]</th>                                <td>0.001</td>   <td>0.026</td>   <td>0.051</td>  <td>0.959</td> <td>-0.051</td>  <td>0.053</td>
 </tr>
 <tr>
-  <th>anxiety[T.Not during the past month]</th>                               <td>0.056</td>   <td>0.039</td>   <td>1.441</td>  <td>0.149</td> <td>-0.020</td>  <td>0.133</td>
-</tr>
-<tr>
-  <th>anxiety[T.Once or twice a week]</th>                                    <td>0.035</td>   <td>0.039</td>   <td>0.888</td>  <td>0.375</td> <td>-0.042</td>  <td>0.112</td>
-</tr>
-<tr>
-  <th>anxiety[T.Three or more times a week]</th>                              <td>0.045</td>   <td>0.041</td>   <td>1.105</td>  <td>0.269</td> <td>-0.035</td>  <td>0.124</td>
-</tr>
-<tr>
-  <th>depression[T.Less than once a week]:score_type[T.STM]</th>              <td>0.022</td>   <td>0.065</td>   <td>0.336</td>  <td>0.737</td> <td>-0.105</td>  <td>0.148</td>
-</tr>
-<tr>
-  <th>depression[T.Not during the past month]:score_type[T.STM]</th>          <td>0.045</td>   <td>0.065</td>   <td>0.700</td>  <td>0.484</td> <td>-0.081</td>  <td>0.172</td>
-</tr>
-<tr>
-  <th>depression[T.Once or twice a week]:score_type[T.STM]</th>               <td>0.032</td>   <td>0.065</td>   <td>0.490</td>  <td>0.624</td> <td>-0.096</td>  <td>0.159</td>
-</tr>
-<tr>
-  <th>depression[T.Three or more times a week]:score_type[T.STM]</th>         <td>0.101</td>   <td>0.069</td>   <td>1.462</td>  <td>0.144</td> <td>-0.034</td>  <td>0.236</td>
-</tr>
-<tr>
-  <th>depression[T.Less than once a week]:score_type[T.Verbal]</th>          <td>-0.010</td>   <td>0.065</td>  <td>-0.161</td>  <td>0.872</td> <td>-0.137</td>  <td>0.116</td>
-</tr>
-<tr>
-  <th>depression[T.Not during the past month]:score_type[T.Verbal]</th>      <td>-0.070</td>   <td>0.065</td>  <td>-1.080</td>  <td>0.280</td> <td>-0.196</td>  <td>0.057</td>
-</tr>
-<tr>
-  <th>depression[T.Once or twice a week]:score_type[T.Verbal]</th>           <td>-0.020</td>   <td>0.065</td>  <td>-0.302</td>  <td>0.763</td> <td>-0.147</td>  <td>0.108</td>
-</tr>
-<tr>
-  <th>depression[T.Three or more times a week]:score_type[T.Verbal]</th>      <td>0.082</td>   <td>0.069</td>   <td>1.192</td>  <td>0.233</td> <td>-0.053</td>  <td>0.217</td>
+  <th>gender[T.Other]:score_type[T.Verbal]</th>                              <td>-0.134</td>   <td>0.152</td>  <td>-0.879</td>  <td>0.379</td> <td>-0.433</td>  <td>0.165</td>
 </tr>
 <tr>
   <th>anxiety[T.Less than once a week]:score_type[T.STM]</th>                 <td>0.156</td>   <td>0.055</td>   <td>2.804</td>  <td>0.005</td>  <td>0.047</td>  <td>0.264</td>
@@ -12265,6 +12253,30 @@ div#notebook {
   <th>anxiety[T.Three or more times a week]:score_type[T.Verbal]</th>        <td>-0.112</td>   <td>0.057</td>  <td>-1.953</td>  <td>0.051</td> <td>-0.225</td>  <td>0.000</td>
 </tr>
 <tr>
+  <th>depression[T.Less than once a week]:score_type[T.STM]</th>              <td>0.022</td>   <td>0.065</td>   <td>0.336</td>  <td>0.737</td> <td>-0.105</td>  <td>0.148</td>
+</tr>
+<tr>
+  <th>depression[T.Not during the past month]:score_type[T.STM]</th>          <td>0.045</td>   <td>0.065</td>   <td>0.700</td>  <td>0.484</td> <td>-0.081</td>  <td>0.172</td>
+</tr>
+<tr>
+  <th>depression[T.Once or twice a week]:score_type[T.STM]</th>               <td>0.032</td>   <td>0.065</td>   <td>0.490</td>  <td>0.624</td> <td>-0.096</td>  <td>0.159</td>
+</tr>
+<tr>
+  <th>depression[T.Three or more times a week]:score_type[T.STM]</th>         <td>0.101</td>   <td>0.069</td>   <td>1.462</td>  <td>0.144</td> <td>-0.034</td>  <td>0.236</td>
+</tr>
+<tr>
+  <th>depression[T.Less than once a week]:score_type[T.Verbal]</th>          <td>-0.010</td>   <td>0.065</td>  <td>-0.161</td>  <td>0.872</td> <td>-0.137</td>  <td>0.116</td>
+</tr>
+<tr>
+  <th>depression[T.Not during the past month]:score_type[T.Verbal]</th>      <td>-0.070</td>   <td>0.065</td>  <td>-1.080</td>  <td>0.280</td> <td>-0.196</td>  <td>0.057</td>
+</tr>
+<tr>
+  <th>depression[T.Once or twice a week]:score_type[T.Verbal]</th>           <td>-0.020</td>   <td>0.065</td>  <td>-0.302</td>  <td>0.763</td> <td>-0.147</td>  <td>0.108</td>
+</tr>
+<tr>
+  <th>depression[T.Three or more times a week]:score_type[T.Verbal]</th>      <td>0.082</td>   <td>0.069</td>   <td>1.192</td>  <td>0.233</td> <td>-0.053</td>  <td>0.217</td>
+</tr>
+<tr>
   <th>education[T.Doctoral or Professional Degree]:score_type[T.STM]</th>    <td>-0.009</td>   <td>0.044</td>  <td>-0.213</td>  <td>0.831</td> <td>-0.095</td>  <td>0.076</td>
 </tr>
 <tr>
@@ -12289,19 +12301,7 @@ div#notebook {
   <th>education[T.None]:score_type[T.Verbal]</th>                            <td>-0.237</td>   <td>0.088</td>  <td>-2.699</td>  <td>0.007</td> <td>-0.410</td> <td>-0.065</td>
 </tr>
 <tr>
-  <th>gender[T.Male]:score_type[T.STM]</th>                                   <td>0.210</td>   <td>0.026</td>   <td>7.918</td>  <td>0.000</td>  <td>0.158</td>  <td>0.262</td>
-</tr>
-<tr>
-  <th>gender[T.Other]:score_type[T.STM]</th>                                 <td>-0.253</td>   <td>0.152</td>  <td>-1.661</td>  <td>0.097</td> <td>-0.552</td>  <td>0.046</td>
-</tr>
-<tr>
-  <th>gender[T.Male]:score_type[T.Verbal]</th>                                <td>0.001</td>   <td>0.026</td>   <td>0.051</td>  <td>0.959</td> <td>-0.051</td>  <td>0.053</td>
-</tr>
-<tr>
-  <th>gender[T.Other]:score_type[T.Verbal]</th>                              <td>-0.134</td>   <td>0.152</td>  <td>-0.879</td>  <td>0.379</td> <td>-0.433</td>  <td>0.165</td>
-</tr>
-<tr>
-  <th>age_at_test:np.power(typical_sleep_duration, 2)</th>                    <td>0.000</td>   <td>0.000</td>   <td>0.372</td>  <td>0.710</td> <td>-0.000</td>  <td>0.000</td>
+  <th>age_at_test:typical_sleep_duration</th>                                <td>-0.000</td>   <td>0.000</td>  <td>-0.039</td>  <td>0.969</td> <td>-0.001</td>  <td>0.001</td>
 </tr>
 <tr>
   <th>age_at_test</th>                                                       <td>-0.022</td>   <td>0.001</td>  <td>-31.922</td> <td>0.000</td> <td>-0.023</td> <td>-0.021</td>
@@ -12322,9 +12322,6 @@ div#notebook {
   <th>np.power(typical_sleep_duration, 2):score_type[T.Verbal]</th>           <td>0.004</td>   <td>0.005</td>   <td>0.799</td>  <td>0.425</td> <td>-0.005</td>  <td>0.013</td>
 </tr>
 <tr>
-  <th>age_at_test:typical_sleep_duration</th>                                <td>-0.000</td>   <td>0.000</td>  <td>-0.039</td>  <td>0.969</td> <td>-0.001</td>  <td>0.001</td>
-</tr>
-<tr>
   <th>typical_sleep_duration</th>                                             <td>0.029</td>   <td>0.007</td>   <td>3.915</td>  <td>0.000</td>  <td>0.014</td>  <td>0.043</td>
 </tr>
 <tr>
@@ -12332,6 +12329,9 @@ div#notebook {
 </tr>
 <tr>
   <th>typical_sleep_duration:score_type[T.Verbal]</th>                        <td>0.010</td>   <td>0.010</td>   <td>0.980</td>  <td>0.327</td> <td>-0.010</td>  <td>0.030</td>
+</tr>
+<tr>
+  <th>age_at_test:np.power(typical_sleep_duration, 2)</th>                    <td>0.000</td>   <td>0.000</td>   <td>0.372</td>  <td>0.710</td> <td>-0.000</td>  <td>0.000</td>
 </tr>
 <tr>
   <th>groups RE</th>                                                          <td>0.000</td>   <td>0.005</td>     <td></td>       <td></td>       <td></td>       <td></td>   

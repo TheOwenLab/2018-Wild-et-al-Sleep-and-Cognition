@@ -3,7 +3,7 @@
 
 # # Part 5 - Supplementary Analyses
 
-# In[2]:
+# In[1]:
 
 
 # Import all required Python modules
@@ -25,20 +25,20 @@ get_ipython().run_line_magic('matplotlib', 'inline')
 idx = pd.IndexSlice
 
 
-# In[3]:
+# In[2]:
 
 
 # List of all columns in the data frame that have scores
 score_columns = ss.score_columns() + [score+"_score" for score in ss.COMPOSITE_SCORE_NAMES]
 
 
-# In[4]:
+# In[3]:
 
 
 data = pd.read_pickle('../data/final_sample.pickle.bz2')
 
 
-# In[5]:
+# In[4]:
 
 
 # Shift (offset) continuous predictor variables so that regression 
@@ -50,7 +50,7 @@ data.loc[:,'typical_sleep_duration'] -= sleep_offset
 data.loc[:,'prev_night_sleep_duration'] -= sleep_offset
 
 
-# In[6]:
+# In[5]:
 
 
 # Re-order the score columns (mainly for visualization purposes)
@@ -58,7 +58,7 @@ score_columns = np.array(score_columns)
 score_columns = score_columns[[0,4,9,11,3,5,6,8,10,1,2,7,12,13,14,15]]
 
 
-# In[7]:
+# In[6]:
 
 
 # Calculate the effective number of scores being tested. It's not the
@@ -76,7 +76,7 @@ eff_alpha = alpha/eff_num_scores
 print("Effective alpha: %.05f"%eff_alpha)
 
 
-# In[8]:
+# In[7]:
 
 
 # Specify the variables that will make up terms in the regression equation
@@ -91,7 +91,7 @@ full_model       = age_regressors | sleep_regressors | age_by_sleep | other_cova
 
 # Is the U-shaped relationship driven by poor performers with very little, or way too much, sleep?
 
-# In[9]:
+# In[8]:
 
 
 # Construct a mask that removes subjects who reported sleeping more
@@ -103,7 +103,7 @@ print('%d subjects remain after filtering sleep durations more than 1.5 SDs from
       data[not_in_the_tails].shape[0])
 
 
-# In[11]:
+# In[9]:
 
 
 # Likelihood Ratio (LR) Tests for different effects
@@ -136,7 +136,7 @@ results.loc[idx[:,ss.COMPOSITE_SCORE_NAMES],:]
 
 # ## 2) Use Previous Night's Sleep Instead of Typical Sleep Duration
 
-# In[12]:
+# In[10]:
 
 
 prev_night_sleep  = set(['np.power(prev_night_sleep_duration,2)', 'prev_night_sleep_duration'])
@@ -144,7 +144,7 @@ age_by_prev_sleep = ss.build_interaction_terms(age_regressors, prev_night_sleep)
 prev_night_full_model = age_regressors | prev_night_sleep | age_by_prev_sleep | other_covariates
 
 
-# In[13]:
+# In[11]:
 
 
 # Likelihood Ratio (LR) Tests for different effects
@@ -180,7 +180,7 @@ prev_night_results.loc[idx[:,ss.COMPOSITE_SCORE_NAMES],:]
 # - Gender (and interactions with gender)
 # - levels of education, anxiety, depression
 
-# In[14]:
+# In[12]:
 
 
 gender_by_sleep   = ss.build_interaction_terms(set(['gender']), sleep_regressors)
@@ -188,7 +188,7 @@ full_model        = age_regressors | sleep_regressors | age_by_sleep | other_cov
 full_gender_model = age_regressors | sleep_regressors | age_by_sleep | other_covariates | gender_by_sleep
 
 
-# In[15]:
+# In[13]:
 
 
 # Likelihood Ratio (LR) Tests for different effects
@@ -227,7 +227,7 @@ results.loc[idx[:,ss.COMPOSITE_SCORE_NAMES],:].to_excel('../CSVs/TableS8.xlsx')
 # - Real effects of gender, frequency of anxiety-related episodes, and level of education.
 # - No interaction between gender and sleep duration
 
-# In[17]:
+# In[14]:
 
 
 # Re-build and estimate regression models for the four composite scores
@@ -235,7 +235,7 @@ results.loc[idx[:,ss.COMPOSITE_SCORE_NAMES],:].to_excel('../CSVs/TableS8.xlsx')
 estimated_models = [smf.ols(ss.build_model_expression(full_model)%score, data=data).fit() for score in score_columns[-4:]]
 
 
-# In[18]:
+# In[15]:
 
 
 # Plot the marginal effects of each of these effects
@@ -264,20 +264,20 @@ fig.savefig('../images/FigureS4.pdf', format='pdf')
 
 # ## 4) Does removing covariates (gender, etc.) affect the results?
 
-# In[19]:
+# In[16]:
 
 
 other_covariates
 
 
-# In[20]:
+# In[17]:
 
 
 reduced_model = full_model - other_covariates
 print(ss.build_model_expression(reduced_model))
 
 
-# In[22]:
+# In[18]:
 
 
 # Likelihood Ratio (LR) Tests for different effects
@@ -307,7 +307,7 @@ results.loc[idx[:,ss.COMPOSITE_SCORE_NAMES],:]
 
 # ## 5) Check Whether Dependent Variables are Normally Distributed
 
-# In[25]:
+# In[19]:
 
 
 from scipy import stats
@@ -320,10 +320,4 @@ for i, model in enumerate(estimated_models):
     sns.distplot(residuals, ax=axs[0,i])
     stats.probplot(residuals, dist="norm", plot=axs[1,i])
     axs[0,i].set_title(model.model.endog_names)
-
-
-# In[ ]:
-
-
-x
 

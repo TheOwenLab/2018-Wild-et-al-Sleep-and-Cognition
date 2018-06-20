@@ -1,17 +1,27 @@
-from statsmodels.sandbox.stats.multicomp import multipletests
-from scipy.stats import gaussian_kde
-from patsy import ContrastMatrix
-from collections import namedtuple
+""" This script contains all helper functions and constants used by Jupyter
+    notebook analyses for the study, "Dissociable effects of self-reported 
+    daily sleep duration on high-level cognitive abilities."
+    
+    Last Updated: 2018-06-19 by cwild
+
+"""
+
 import numpy as np
 import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
-import re
-import pdb, traceback, sys
-import itertools
 import statsmodels.api as sm
 import statsmodels.stats.api as sms
 import statsmodels.formula.api as smf
+from statsmodels.sandbox.stats.multicomp import multipletests
+from scipy.stats import gaussian_kde
+from patsy import ContrastMatrix
+from collections import namedtuple
+
+import pdb, traceback, sys
+import itertools
+
+
 idx = pd.IndexSlice
 
 TEST_NAMES = ['spatial_span',
@@ -35,17 +45,10 @@ QUESTIONNAIRE_ITEMS = ['age_at_test',
                        'typical_sleep_duration',
                        'prev_night_sleep_duration']
 
-FACTOR_NAMES = ['STM', 'Reasoning', 'Verbal']
-COMPOSITE_SCORE_NAMES = ['STM', 'Reasoning', 'Verbal', 'Overall']
-
-# A set of four maximally distinct colors, generated from 
-# tools.medialab.sciences-po.fr/iwanthue/
-COMPOSITE_SCORE_COLORS = [
-    (0.8509803921568627, 0.37254901960784315, 0.00784313725490196),
-    (0.9058823529411765, 0.1607843137254902  ,0.5411764705882353),
-    (0.10588235294117647, 0.6196078431372549, 0.4666666666666667),
-    (0.4588235294117647, 0.4392156862745098,  0.7019607843137254)]
-
+# Varimax rotated principal component loadings (N=3 components) derived
+# from the data of Hampshire et al. (2012). Each row is the loading of 
+# each test (in the order of TEST_NAMES) on the 1st three components, 
+# which have been interpreted as STM, Reasoning, and Verbal.
 FACTOR_LOADINGS = np.array(
     [[     0.7014310832595965,   0.2114602614099599,  0.06335835494755199],
      [    0.06489246556607997,   0.3200071012586953,   0.6555755842264829],
@@ -59,18 +62,17 @@ FACTOR_LOADINGS = np.array(
      [     0.5987583784444802, -0.03013309539255579,  0.23366793983112322],
      [-0.00047574212977022357,   0.5198168539290584,   0.3378749934189247],
      [     0.6001410364160199,   0.1816371349537731,  0.18355395542544883]])  
-    
-def filter_df_with_stdevs(df, scores = TEST_NAMES, stdevs=[6,4]):
-    """
-    """
-    
-    for column in df:
-        this_score = [score for score in scores if score in column]
-        if this_score:
-            for stdev in stdevs:
-                df = df[np.abs(df[column]-df[column].mean())<=(stdev*df[column].std())]
-    return df
-    
+
+COMPOSITE_SCORE_NAMES = ['STM', 'Reasoning', 'Verbal', 'Overall']
+
+# A set of four maximally distinct colors, generated from 
+# tools.medialab.sciences-po.fr/iwanthue/
+COMPOSITE_SCORE_COLORS = [
+    (0.8509803921568627,  0.37254901960784315, 0.00784313725490196),
+    (0.9058823529411765,  0.1607843137254902,  0.5411764705882353),
+    (0.10588235294117647, 0.6196078431372549,  0.4666666666666667),
+    (0.4588235294117647,  0.4392156862745098,  0.7019607843137254)]
+
 def score_columns():
     """ Returns a list of the of columns names associated with test scores for the sleep study.
         Can be used to select test score columns from a full data frame.
@@ -124,7 +126,7 @@ def create_histogram(data, column):
 
 def joint_plot_with_data_cloud(data, x_column, y_column, x_title=None, y_title=None, bw=0.7, ax=None):
     """ Creates a scatter plot of y_column vs x_column, and uses a gaussian kernel to estimate
-        the probability density of the data could, instead of just plotting a mass of opaque dots.
+        the probability density of the data cloud, instead of just plotting a mass of opaque dots.
         Also places histograms (and estimated pdfs) for each variable along the corresponding axis.
         Also includes a line of best fit and associated statistics.
     """
@@ -133,16 +135,18 @@ def joint_plot_with_data_cloud(data, x_column, y_column, x_title=None, y_title=N
     if y_title is None:
         y_title = y_column
 
-    xy = np.vstack([data[x_column],data[y_column]])
-    z  = gaussian_kde(xy,bw_method=bw)(xy)
-    xx = sns.jointplot(x_column, y_column, data=data, kind='reg', space=0, marginal_kws=dict(bins=10,kde_kws=dict(bw=bw)), annot_kws=dict(stat='r'), size=3.5)
+    xy  = np.vstack([data[x_column],data[y_column]])
+    z   = gaussian_kde(xy,bw_method=bw)(xy)
+    fig = sns.jointplot(x_column, y_column, data=data, kind='reg', space=0,
+                       marginal_kws=dict(bins=10,kde_kws=dict(bw=bw)), 
+                       annot_kws=dict(stat='r'), size=3.5)
 
-    del xx.ax_joint.collections[0]
-    xx.ax_joint.scatter(data[x_column], data[y_column], c=z, cmap='viridis')
-    xx.ax_joint.set_ylabel(y_title)
-    xx.ax_joint.set_xlabel(x_title)
+    del fig.ax_joint.collections[0]
+    fig.ax_joint.scatter(data[x_column], data[y_column], c=z, cmap='viridis')
+    fig.ax_joint.set_ylabel(y_title)
+    fig.ax_joint.set_xlabel(x_title)
     plt.show()
-    return xx
+    return fig 
     
 
 def build_model_expression(regressors):
@@ -165,7 +169,8 @@ def build_model_expression(regressors):
 
 def build_interaction_terms(*regressors):
     """ Given multiple lists (or sets) of regressors, returns a set of all interaction terms.
-        The set of interaction terms can then be used to build a model expression.
+        The set of interaction terms can then be used to build a model expression. Note that
+        because Python 'sets' are used, order of items may not be preserved.
     
     Args:
         *regressors (mutiple list or sets of strings)
@@ -237,7 +242,7 @@ def compare_models(model_comparisons, data, score_columns, alpha=0.05, n_compari
             The resulting adjusted p-value is what is compared to the alpha argument.
             Note: this take precendence over the multiple correction type argument.
         correction (string): method for correcting for multiple comparisons. Can be
-            None, or any of the options listed in teh above documentation for multipletests.
+            None, or any of the options listed in the above documentation for multipletests.
                 
     Returns:
         A pandas dataframe with one row per score, and a multindex column structure that 
@@ -285,8 +290,8 @@ def cohens_f_squared(full_model, restricted_model):
     """ Calculate Cohen's f squared effect size statistic. See this reference:
     
         Selya, A. S., Rose, J. S., Dierker, L. C., Hedeker, D., & Mermelstein, R. J. (2012). 
-            A practical guide to calculating Cohen’s f 2, a measure of local effect size, from PROC 
-            MIXED. Frontiers in Psychology, 3, 1–6.
+            A practical guide to calculating Cohen’s f 2, a measure of local effect size, 
+            from PROC MIXED. Frontiers in Psychology, 3, 1–6.
     
     """
     return (full_model.rsquared-restricted_model.rsquared)/(1-full_model.rsquared)
@@ -331,12 +336,56 @@ def effective_number_of_comparisons(data):
     return eff_num_scores
 
 def list_union(listA, listB):
-    """ Find the union of two lists (A & B)
+    """ Find the union (intersection) of two lists (A & B). Note that because the python
+        data type 'sets' is used, order may not be preserved.
+    
+    Args:
+        listA (list): a list of strings, or whatever
+        listB (list): a list of strings, or whatever
+        
+    Returns:
+        A list that is the union of listA & listB
+        
+    Example:
+        >>> list_union(['cat', 'dog','horse'], ['mouse', 'dog', 'snake', 'cat', 'pig'])
+            ['dog', 'cat']
     """
     return list(set(listA) & set(listB))
 
+def filter_df_with_stdevs(df, scores = TEST_NAMES, stdevs=[6,4]):
+    """
+    """
+    
+    for column in df:
+        this_score = [score for score in scores if score in column]
+        if this_score:
+            for stdev in stdevs:
+                df = df[np.abs(df[column]-df[column].mean())<=(stdev*df[column].std())]
+    return df
+
 def create_stats_figure(results, stat_name, p_name, alpha=0.05, log_stats=True, correction=None):
-    """ 
+    """ Creates a matrix figure to summarize multple tests/scores. Each cell represents a contrast
+        (or model comparison) for a specific effect (rows) for a given score (columns). Also
+        draws asterisks on cells for which there is a statistically significant effect.
+        
+    Args:
+        results (Pandas dataframe): a dataframe that contains the statistics to display. Should
+            be a rectangular dataframe with tests as rows and effects as columns (i.e., the 
+            transpose of the resulting image). The dataframe index and column labels are used
+            as labels for the resulting figure.
+        stat_name (string): Which statistic to plot. There might be multiple columns for each
+            effect (e.g., Likelihood Ratio, BFs, F-stats, etc.)
+        p_name (string): The name of the column to use for p-values.
+        alpha (float): what is the alpha for significant effects?
+        log_stats (boolean): Should we take the logarithm of statistic values before creating 
+            the image? Probably yes, if there is a large variance in value across tests and
+            effects.
+        correction (string): indicates how the alpha was corrected (e.g., FDR or bonferroni) so
+            the legend can be labelled appropriately.
+            
+    Returns:
+        A matplotlib figure.
+        
     """
     
     score_index   = results.index.levels[1][results.index.labels[1]].unique()
@@ -374,7 +423,23 @@ def create_stats_figure(results, stat_name, p_name, alpha=0.05, log_stats=True, 
     return figure
 
 def create_bayes_factors_figure(results, log_stats=True):
-    """
+    """ Creates a matrix figure to summarize Bayesian stats for multiple scores & tests.
+        Each cell indicates the Bayes Factor (BF associated with a model comparison) for 
+        a specific effect (rows) for a given score (columns). Also draws symbols on cells
+        to indicate the interpretation of that BF.
+        
+    Args:
+        results (Pandas dataframe): a dataframe that contains the statistics to display. Should
+            be a rectangular dataframe with tests as rows and effects as columns (i.e., the 
+            transpose of the resulting image). The dataframe index and column labels are used
+            as labels for the resulting figure.
+        log_stats (boolean): Should we take the logarithm of BF values before creating 
+            the image? Probably yes, if there is a large variance in value across scores and
+            effects.
+            
+    Returns:
+        A matplotlib figure
+    
     """
     
     score_index    = results.index.levels[1][results.index.labels[1]].unique()
@@ -430,6 +495,22 @@ def create_bayes_factors_figure(results, log_stats=True):
 
 def categorical_factors(model_design):
     """ Given a model specification, returns a list of all factors that are categorical.
+    
+    Args:
+        model_design (patsy.design_info.DesignInfo): the model design info for a regression
+            model constructed using Patsy (e.g., default statsmodels)
+            
+    Returns:
+        A list of factors.
+    
+    Examples:
+        >>> model_design = estimated_delta_models[-1].model.data.design_info
+        >>> ss.categorical_factors(model_design)
+            [EvalFactor('anxiety'),
+             EvalFactor('depression'),
+             EvalFactor('gender'),
+             EvalFactor('education')]
+    
     """
     all_factors = list(model_design.factor_infos.values())
     return [factor.factor for factor in all_factors if factor.type == 'categorical']
@@ -563,6 +644,22 @@ def fieller_ci(model, factor_name, t_0=1.96):
     return np.array([c1,c2])
 
 def inch2cm(*tupl):
+    """ Converts a tuple of measurement in inches, to centimetres.
+        Adapted from: 
+            https://stackoverflow.com/questions/14708695/specify-figure-size-in-centimeter-in-matplotlib
+    
+    Args:
+        *tupl (tuple): a bunch of quanities in inches
+    
+    Returns:
+        *tupl (tuple): those numbers, but converted into centimetres.
+        
+    
+    Examples:
+        >>> ss.inch2cm(1,2,3)
+            (2.5399986284007405, 5.079997256801481, 7.619995885202221)
+    
+    """
     cm = 0.393701
     if isinstance(tupl[0], tuple):
         return tuple(i/cm for i in tupl[0])
