@@ -183,20 +183,32 @@ data['depression'] = data['depression'].cat.reorder_categories(depression_level_
 ss.create_histogram(data, 'depression')
 
 
-# In[19]:
+# In[96]:
+
+
+# Split continuous variables into some bins, just for table purposes
+age_bin_names   = ['18-30','30-40','40-50','50-60','60+']
+data['age_bin'] = pd.cut(data['age_at_test'], [17,30,40,50,60,150], labels = age_bin_names)
+
+sleep_bin_names = ['0-6','6-8','8+']
+data['typical_sleep_bin'] = pd.cut(data['typical_sleep_duration'], [-1,6,8,24], labels=sleep_bin_names)
+data['prev_night_sleep_bin'] = pd.cut(data['prev_night_sleep_duration'], [-1,6,8,24], labels=sleep_bin_names)
+
+
+# In[99]:
 
 
 # Table of responses to each questionnaire item
-demo_questions = ['gender', 'education', 'anxiety', 'depression']
-demo_index     = [(question,category) for question in demo_questions for category in data[question].unique()]
+demo_questions = ['gender', 'education', 'anxiety', 'depression', 'age_bin', 'typical_sleep_bin', 'prev_night_sleep_bin']
+demo_index     = [(question,category) for question in demo_questions for category in data[question].value_counts().index]
 demo_index     = pd.MultiIndex.from_tuples(demo_index)
 demographics   = pd.DataFrame(index=demo_index, columns=['count'])
 for question in demo_questions:
-    demographics.loc[idx[question, :], 'count'] = data[question].value_counts().values
+    demographics.loc[idx[question,:], 'count'] = data[question].value_counts().values
 demographics.to_excel('../CSVs/TableS1.xlsx')
 
 
-# In[20]:
+# In[100]:
 
 
 demographics

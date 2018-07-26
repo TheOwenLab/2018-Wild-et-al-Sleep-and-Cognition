@@ -12837,16 +12837,35 @@ memory usage: 2.2 MB
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[19]:</div>
+<div class="prompt input_prompt">In&nbsp;[96]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Split continuous variables into some bins, just for table purposes</span>
+<span class="n">age_bin_names</span>   <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;18-30&#39;</span><span class="p">,</span><span class="s1">&#39;30-40&#39;</span><span class="p">,</span><span class="s1">&#39;40-50&#39;</span><span class="p">,</span><span class="s1">&#39;50-60&#39;</span><span class="p">,</span><span class="s1">&#39;60+&#39;</span><span class="p">]</span>
+<span class="n">data</span><span class="p">[</span><span class="s1">&#39;age_bin&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">cut</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;age_at_test&#39;</span><span class="p">],</span> <span class="p">[</span><span class="mi">17</span><span class="p">,</span><span class="mi">30</span><span class="p">,</span><span class="mi">40</span><span class="p">,</span><span class="mi">50</span><span class="p">,</span><span class="mi">60</span><span class="p">,</span><span class="mi">150</span><span class="p">],</span> <span class="n">labels</span> <span class="o">=</span> <span class="n">age_bin_names</span><span class="p">)</span>
+
+<span class="n">sleep_bin_names</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;0-6&#39;</span><span class="p">,</span><span class="s1">&#39;6-8&#39;</span><span class="p">,</span><span class="s1">&#39;8+&#39;</span><span class="p">]</span>
+<span class="n">data</span><span class="p">[</span><span class="s1">&#39;typical_sleep_bin&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">cut</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;typical_sleep_duration&#39;</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span><span class="mi">24</span><span class="p">],</span> <span class="n">labels</span><span class="o">=</span><span class="n">sleep_bin_names</span><span class="p">)</span>
+<span class="n">data</span><span class="p">[</span><span class="s1">&#39;prev_night_sleep_bin&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">cut</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;prev_night_sleep_duration&#39;</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span><span class="mi">24</span><span class="p">],</span> <span class="n">labels</span><span class="o">=</span><span class="n">sleep_bin_names</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[99]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Table of responses to each questionnaire item</span>
-<span class="n">demo_questions</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;gender&#39;</span><span class="p">,</span> <span class="s1">&#39;education&#39;</span><span class="p">,</span> <span class="s1">&#39;anxiety&#39;</span><span class="p">,</span> <span class="s1">&#39;depression&#39;</span><span class="p">]</span>
-<span class="n">demo_index</span>     <span class="o">=</span> <span class="p">[(</span><span class="n">question</span><span class="p">,</span><span class="n">category</span><span class="p">)</span> <span class="k">for</span> <span class="n">question</span> <span class="ow">in</span> <span class="n">demo_questions</span> <span class="k">for</span> <span class="n">category</span> <span class="ow">in</span> <span class="n">data</span><span class="p">[</span><span class="n">question</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">()]</span>
+<span class="n">demo_questions</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;gender&#39;</span><span class="p">,</span> <span class="s1">&#39;education&#39;</span><span class="p">,</span> <span class="s1">&#39;anxiety&#39;</span><span class="p">,</span> <span class="s1">&#39;depression&#39;</span><span class="p">,</span> <span class="s1">&#39;age_bin&#39;</span><span class="p">,</span> <span class="s1">&#39;typical_sleep_bin&#39;</span><span class="p">,</span> <span class="s1">&#39;prev_night_sleep_bin&#39;</span><span class="p">]</span>
+<span class="n">demo_index</span>     <span class="o">=</span> <span class="p">[(</span><span class="n">question</span><span class="p">,</span><span class="n">category</span><span class="p">)</span> <span class="k">for</span> <span class="n">question</span> <span class="ow">in</span> <span class="n">demo_questions</span> <span class="k">for</span> <span class="n">category</span> <span class="ow">in</span> <span class="n">data</span><span class="p">[</span><span class="n">question</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span><span class="o">.</span><span class="n">index</span><span class="p">]</span>
 <span class="n">demo_index</span>     <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">MultiIndex</span><span class="o">.</span><span class="n">from_tuples</span><span class="p">(</span><span class="n">demo_index</span><span class="p">)</span>
 <span class="n">demographics</span>   <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="n">demo_index</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;count&#39;</span><span class="p">])</span>
 <span class="k">for</span> <span class="n">question</span> <span class="ow">in</span> <span class="n">demo_questions</span><span class="p">:</span>
-    <span class="n">demographics</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">idx</span><span class="p">[</span><span class="n">question</span><span class="p">,</span> <span class="p">:],</span> <span class="s1">&#39;count&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">question</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span><span class="o">.</span><span class="n">values</span>
+    <span class="n">demographics</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">idx</span><span class="p">[</span><span class="n">question</span><span class="p">,:],</span> <span class="s1">&#39;count&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">question</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span><span class="o">.</span><span class="n">values</span>
 <span class="n">demographics</span><span class="o">.</span><span class="n">to_excel</span><span class="p">(</span><span class="s1">&#39;../CSVs/TableS1.xlsx&#39;</span><span class="p">)</span>
 </pre></div>
 
@@ -12857,7 +12876,7 @@ memory usage: 2.2 MB
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[20]:</div>
+<div class="prompt input_prompt">In&nbsp;[100]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">demographics</span>
@@ -12873,7 +12892,7 @@ memory usage: 2.2 MB
 
 <div class="output_area">
 
-<div class="prompt output_prompt">Out[20]:</div>
+<div class="prompt output_prompt">Out[100]:</div>
 
 
 
@@ -12903,11 +12922,11 @@ memory usage: 2.2 MB
   <tbody>
     <tr>
       <th rowspan="3" valign="top">gender</th>
-      <th>Male</th>
+      <th>Female</th>
       <td>6797</td>
     </tr>
     <tr>
-      <th>Female</th>
+      <th>Male</th>
       <td>4013</td>
     </tr>
     <tr>
@@ -12916,15 +12935,15 @@ memory usage: 2.2 MB
     </tr>
     <tr>
       <th rowspan="5" valign="top">education</th>
-      <th>High School Diploma</th>
+      <th>Bachelor's Degree</th>
       <td>4532</td>
     </tr>
     <tr>
-      <th>Master's Degree</th>
+      <th>High School Diploma</th>
       <td>2599</td>
     </tr>
     <tr>
-      <th>Bachelor's Degree</th>
+      <th>Master's Degree</th>
       <td>2368</td>
     </tr>
     <tr>
@@ -12937,36 +12956,36 @@ memory usage: 2.2 MB
     </tr>
     <tr>
       <th rowspan="5" valign="top">anxiety</th>
-      <th>Less than once a week</th>
+      <th>Not during the past month</th>
       <td>4116</td>
     </tr>
     <tr>
-      <th>Once or twice a week</th>
+      <th>Less than once a week</th>
       <td>2589</td>
     </tr>
     <tr>
-      <th>Not during the past month</th>
+      <th>Once or twice a week</th>
       <td>1882</td>
     </tr>
     <tr>
-      <th>Every day</th>
+      <th>Three or more times a week</th>
       <td>1271</td>
     </tr>
     <tr>
-      <th>Three or more times a week</th>
+      <th>Every day</th>
       <td>1028</td>
     </tr>
     <tr>
       <th rowspan="5" valign="top">depression</th>
-      <th>Less than once a week</th>
+      <th>Not during the past month</th>
       <td>4702</td>
     </tr>
     <tr>
-      <th>Once or twice a week</th>
+      <th>Less than once a week</th>
       <td>2814</td>
     </tr>
     <tr>
-      <th>Not during the past month</th>
+      <th>Once or twice a week</th>
       <td>1762</td>
     </tr>
     <tr>
@@ -12976,6 +12995,53 @@ memory usage: 2.2 MB
     <tr>
       <th>Every day</th>
       <td>651</td>
+    </tr>
+    <tr>
+      <th rowspan="5" valign="top">age_bin</th>
+      <th>18-30</th>
+      <td>2911</td>
+    </tr>
+    <tr>
+      <th>30-40</th>
+      <td>2688</td>
+    </tr>
+    <tr>
+      <th>40-50</th>
+      <td>2154</td>
+    </tr>
+    <tr>
+      <th>50-60</th>
+      <td>1808</td>
+    </tr>
+    <tr>
+      <th>60+</th>
+      <td>1325</td>
+    </tr>
+    <tr>
+      <th rowspan="3" valign="top">typical_sleep_bin</th>
+      <th>0-6</th>
+      <td>5315</td>
+    </tr>
+    <tr>
+      <th>6-8</th>
+      <td>5102</td>
+    </tr>
+    <tr>
+      <th>8+</th>
+      <td>469</td>
+    </tr>
+    <tr>
+      <th rowspan="3" valign="top">prev_night_sleep_bin</th>
+      <th>6-8</th>
+      <td>5527</td>
+    </tr>
+    <tr>
+      <th>0-6</th>
+      <td>3205</td>
+    </tr>
+    <tr>
+      <th>8+</th>
+      <td>2154</td>
     </tr>
   </tbody>
 </table>
