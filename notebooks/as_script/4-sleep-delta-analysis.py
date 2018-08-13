@@ -28,19 +28,29 @@ idx = pd.IndexSlice
 # In[2]:
 
 
+# Change settings to embed TrueType fonts
+# http://phyletica.org/matplotlib-fonts/
+import matplotlib
+matplotlib.rcParams['pdf.fonttype'] = 42
+matplotlib.rcParams['ps.fonttype'] = 42
+
+
+# In[3]:
+
+
 # List of all columns in the data frame that have scores
 score_columns = ss.score_columns() + [score+"_score" for score in ss.COMPOSITE_SCORE_NAMES]
 domain_names  = [domain+"_score" for domain in ss.COMPOSITE_SCORE_NAMES[0:-1]]
 
 
-# In[3]:
+# In[4]:
 
 
 # Load the final data sample (saved in Part 1)
 data = pd.read_pickle('../data/final_sample.pickle.bz2')
 
 
-# In[4]:
+# In[5]:
 
 
 # Calculate the effective number of scores being tested. It's not the
@@ -54,26 +64,26 @@ eff_alpha = alpha/eff_num_scores
 print("Effective alpha: %.05f"%eff_alpha)
 
 
-# In[5]:
+# In[6]:
 
 
 # Calculate the sleep delta
 data.loc[:,'sleep_delta'] = data['prev_night_sleep_duration'] - data['typical_sleep_duration']
 
 
-# In[6]:
+# In[7]:
 
 
 sns.distplot(data['sleep_delta'], bins=20)
 
 
-# In[7]:
+# In[8]:
 
 
 data['sleep_delta'].describe()
 
 
-# In[8]:
+# In[9]:
 
 
 # Shift (offset) continuous predictor variables so that regression 
@@ -86,7 +96,7 @@ data.loc[:,'typical_sleep_duration'] -= sleep_offset
 data.loc[:,'prev_night_sleep_duration'] -= sleep_offset
 
 
-# In[9]:
+# In[10]:
 
 
 age_regressors   = set(['age_at_test'])
@@ -100,13 +110,6 @@ delta_by_duration = ss.build_interaction_terms(sleep_regressors, delta_regressor
 delta_by_age      = ss.build_interaction_terms(age_regressors, delta_regressors)
 full_delta_model  = age_regressors | sleep_regressors | delta_regressors | delta_by_duration | other_covariates
 full_delta_model
-
-
-# In[10]:
-
-
-import importlib
-importlib.reload(ss)
 
 
 # In[11]:
@@ -168,8 +171,9 @@ parameter_table
 # Use these to plot the marginal effect of sleep delta, and calculate the peak locations.
 estimated_delta_models = [smf.ols(ss.build_model_expression(full_delta_model-delta_by_duration)%score, data=data).fit() for score in score_columns[-4:]]
 
-fig5, axs = plt.subplots(figsize=(8.7,3.2), nrows=1, ncols=2, sharey=True)
+fig5, axs = plt.subplots(figsize=(5.5,2), nrows=1, ncols=2, sharey=True, sharex=True)
 plt_score = {'STM':False, 'Reasoning':True, 'Verbal':False, 'Overall':True}
+labels    = ['A) ', 'B) ']
 plt_index = 0
 for score_index, score_model in enumerate(estimated_delta_models):
     score_color = ss.COMPOSITE_SCORE_COLORS[score_index]
@@ -182,7 +186,7 @@ for score_index, score_model in enumerate(estimated_delta_models):
         axs[plt_index].axvline(x=vertex.x, c=score_color)
         axs[plt_index].axvspan(vertex_CI[0], vertex_CI[1], color=score_color, alpha=0.2)
         axs[plt_index].fill_between(x_points, prediction['mean_ci_lower'], prediction['mean_ci_upper'], alpha=0.3, color=score_color)
-        axs[plt_index].plot(x_points, prediction['mean'], linewidth=3, color=score_color, label=score_name)
+        axs[plt_index].plot(x_points, prediction['mean'], linewidth=3, color=score_color, label=labels[plt_index]+score_name)
         axs[plt_index].plot(vertex.x, vertex.y, marker='o', c=score_color)
         axs[plt_index].set_xlim([-6,6])
         axs[plt_index].set_ylim([-1,0.2])
@@ -191,7 +195,7 @@ for score_index, score_model in enumerate(estimated_delta_models):
         print('%20s peak: %.02f (%.03f-%.03f)'%(score_name, vertex.x, vertex_CI[0], vertex_CI[1]))
         plt_index += 1
 axs[0].set_ylabel('Score (SDs)')
-plt.tight_layout()
+plt.tight_layout(pad=0.5, w_pad=0.5, h_pad=0.5)
 fig5.savefig('../images/Figure5.pdf', format='pdf')
 
 
@@ -249,3 +253,5 @@ for score_index, score_model in enumerate(estimated_delta_models):
 axs[0].set_ylabel('Score (SDs)')
 plt.tight_layout()
 
+
+# Last updated by cwild - 2018-08-13
