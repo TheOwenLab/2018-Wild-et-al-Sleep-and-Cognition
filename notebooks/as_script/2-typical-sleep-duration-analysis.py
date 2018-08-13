@@ -26,18 +26,28 @@ idx = pd.IndexSlice
 # In[2]:
 
 
+# Change settings to embed TrueType fonts
+# http://phyletica.org/matplotlib-fonts/
+import matplotlib
+matplotlib.rcParams['pdf.fonttype'] = 42
+matplotlib.rcParams['ps.fonttype'] = 42
+
+
+# In[3]:
+
+
 # List of all columns in the data frame that have scores
 score_columns = ss.score_columns() + [score+"_score" for score in ss.COMPOSITE_SCORE_NAMES]
 
 
-# In[3]:
+# In[4]:
 
 
 # Load the final data sample (saved in Part 1)
 data = pd.read_pickle('../data/final_sample.pickle.bz2')
 
 
-# In[4]:
+# In[5]:
 
 
 # Re-order the score columns (mainly for visualization purposes)
@@ -45,7 +55,7 @@ score_columns = np.array(score_columns)
 score_columns = score_columns[[0,4,9,11,3,5,6,8,10,1,2,7,12,13,14,15]]
 
 
-# In[5]:
+# In[6]:
 
 
 # Calculate the effective number of scores being tested. It's not the
@@ -59,7 +69,7 @@ eff_alpha = alpha/eff_num_scores
 print("Effective alpha: %.05f"%eff_alpha)
 
 
-# In[6]:
+# In[7]:
 
 
 # Shift (offset) continuous predictor variables so that regression 
@@ -71,7 +81,7 @@ data.loc[:,'typical_sleep_duration'] -= sleep_offset
 data.loc[:,'prev_night_sleep_duration'] -= sleep_offset
 
 
-# In[7]:
+# In[8]:
 
 
 age_regressors   = set(['age_at_test'])
@@ -81,14 +91,14 @@ age_by_sleep     = ss.build_interaction_terms(age_regressors, sleep_regressors)
 full_model       = age_regressors | sleep_regressors | age_by_sleep | other_covariates
 
 
-# In[8]:
+# In[9]:
 
 
 # Print a model expression, so we can see what it looks like:
 print(ss.build_model_expression(full_model))
 
 
-# In[9]:
+# In[10]:
 
 
 # Likelihood Ratio (LR) Tests for different effects
@@ -125,7 +135,7 @@ pd.options.display.float_format = '{:.3f}'.format
 table2_results.loc[idx[:,ss.COMPOSITE_SCORE_NAMES],:]
 
 
-# In[10]:
+# In[11]:
 
 
 # Re-build and estimate regression models for the four composite scores
@@ -133,13 +143,13 @@ table2_results.loc[idx[:,ss.COMPOSITE_SCORE_NAMES],:]
 estimated_models = [smf.ols(ss.build_model_expression(full_model)%score, data=data).fit() for score in score_columns[-4:]]
 
 
-# In[11]:
+# In[12]:
 
 
 print("Design matrices are %d x %d" % estimated_models[0].model.exog.shape)
 
 
-# In[12]:
+# In[13]:
 
 
 # Build a table of estimated parameters (for effects of interest)
@@ -159,14 +169,14 @@ parameter_table.to_excel('../CSVs/Table1.xlsx')
 parameter_table
 
 
-# In[13]:
+# In[14]:
 
 
 x = estimated_models[-1]
 x.df_resid
 
 
-# In[14]:
+# In[15]:
 
 
 # Generate predicted scores over a range of typical sleep durations
@@ -180,7 +190,7 @@ x = data['typical_sleep_duration']
 y = data['Overall_score']
 xy = np.vstack([x,y])
 z = gaussian_kde(xy,bw_method=0.7)(xy)
-fig, axs = plt.subplots(figsize=(4.35,3))
+fig, axs = plt.subplots(figsize=(3.55,2.5))
 axs.scatter(x+sleep_offset,y,c=z,s=120,edgecolor='')
 axs.fill_between(overall_prediction.index+sleep_offset, 
                  overall_prediction['mean_ci_lower'], 
@@ -191,17 +201,18 @@ axs.plot(overall_prediction.index+sleep_offset,
          color=ss.COMPOSITE_SCORE_COLORS[-1], linewidth=3)
 axs.set_xlabel("Typical Sleep Duration (hours)")
 axs.set_ylabel("Overall Score (SDs)")
+plt.tight_layout(pad=0.5, w_pad=0.5, h_pad=0.5)
 plt.show()
 fig.savefig('../images/Figure2.pdf', format='pdf')
 
 
-# In[15]:
+# In[16]:
 
 
 # Plot the predicted score as a function of reported sleep duration
 # with 95% confidence intervals. Also, calculate the location of the
 # quadratic vertex (in hours of sleep) and it's 95% CIs.
-fig, axs = plt.subplots(figsize=(8.7,6), nrows=2, ncols=2, sharey=True, sharex=True)
+fig, axs = plt.subplots(figsize=(5.5,4), nrows=2, ncols=2, sharey=True, sharex=True)
 labels   = ['A) ', 'B) ', 'C) ', 'D) ']
 for score_index, score_model in enumerate(estimated_models):
     plot_index  = np.unravel_index(score_index, [2,2])
@@ -232,11 +243,11 @@ axs[0,0].set_ylabel('Score (SDs)')
 axs[1,0].set_ylabel('Score (SDs)')
 axs[1,0].set_xlabel('Typical Sleep Duration (hours)')
 axs[1,1].set_xlabel('Typical Sleep Duration (hours)')
-plt.tight_layout()
+plt.tight_layout(pad=0.5, w_pad=0.5, h_pad=0.5)
 fig.savefig('../images/Figure3.pdf', format='pdf')
 
 
-# In[16]:
+# In[17]:
 
 
 # Plot the difference betwen the predicted score curve and the optimum of that curve.
@@ -244,7 +255,7 @@ fig.savefig('../images/Figure3.pdf', format='pdf')
 # score that occurs at the optimal amount?
 # Also, let's test the size of this difference for 4 hours of sleep.
 test_duration = 4 # We will test difference between 4 hours of sleep, and the optimum
-fig, axs = plt.subplots(figsize=(8.7,6), nrows=2, ncols=2, sharey=True, sharex=True)
+fig, axs = plt.subplots(figsize=(5.5,4), nrows=2, ncols=2, sharey=True, sharex=True)
 for score_index, score_model in enumerate(estimated_models):
     plot_index  = np.unravel_index(score_index, [2,2])
     score_color = ss.COMPOSITE_SCORE_COLORS[score_index]
@@ -295,16 +306,17 @@ for score_index, score_model in enumerate(estimated_models):
     axs[plot_index].set_ylim([-0.1, 0.65])
     axs[plot_index].legend(loc='upper right')
     
-axs[0,0].set_ylabel('Difference From Max (SDs)')
-axs[1,0].set_ylabel('Difference From Max (SDs)')
+# axs[0,0].set_ylabel('Difference From Max (SDs)')
+# axs[1,0].set_ylabel('Difference From Max (SDs)')
+fig.text(-0.03, 0.55, 'Difference From Max (SDs)', va='center', rotation='vertical')
 axs[1,0].set_xlabel('Typical Sleep Duration (hours)')
 axs[1,1].set_xlabel('Typical Sleep Duration (hours)')
 
-plt.tight_layout()
+plt.tight_layout(pad=0.5, w_pad=0.5, h_pad=0.5)
 fig.savefig('../images/Figure4.pdf', format='pdf')
 
 
-# In[17]:
+# In[18]:
 
 
 # How many people slept an amount below this detectable threshold?
@@ -313,7 +325,7 @@ percentage = data[data['typical_sleep_duration']<(cutoff-sleep_offset)].shape[0]
 print('%% of sample who reported slept less than %.02f hours: %.02f%%'%(cutoff, percentage))
 
 
-# In[18]:
+# In[19]:
 
 
 # Generate a plot of predicted domain score vs age.
@@ -332,5 +344,8 @@ for score_index, score_model in enumerate(estimated_models):
 axs.set_xlabel('Age at Test (Years)')
 axs.set_ylabel('Score (stdevs)')
 plt.legend(loc='lower left')
+plt.tight_layout(pad=0.5, w_pad=0.5, h_pad=0.5)
 plt.show()
 
+
+# Last updated by cwild - 2018-08-13
