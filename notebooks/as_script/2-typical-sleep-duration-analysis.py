@@ -32,6 +32,9 @@ import matplotlib
 matplotlib.rcParams['pdf.fonttype'] = 42
 matplotlib.rcParams['ps.fonttype'] = 42
 
+# Default font size to 8pt
+matplotlib.rcParams.update({'font.size': 8})
+
 
 # In[3]:
 
@@ -347,5 +350,3 @@ plt.legend(loc='lower left')
 plt.tight_layout(pad=0.5, w_pad=0.5, h_pad=0.5)
 plt.show()
 
-
-# Last updated by cwild - 2018-08-13

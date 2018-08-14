@@ -133,7 +133,7 @@ factor_loading_df
 
 score_summary = data[score_columns].describe().T
 score_summary.index =  [score[:-6] for score in score_columns]
-# score_summary.to_excel('../CSVs/TableS4.xlsx')
+score_summary.to_excel('../CSVs/TableS4.xlsx')
 score_summary
 
 
