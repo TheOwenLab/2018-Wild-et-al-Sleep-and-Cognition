@@ -24,18 +24,31 @@ idx = pd.IndexSlice
 # In[2]:
 
 
+# Change settings to embed TrueType fonts
+# http://phyletica.org/matplotlib-fonts/
+import matplotlib
+matplotlib.rcParams['pdf.fonttype'] = 42
+matplotlib.rcParams['ps.fonttype'] = 42
+
+# Default font size to 8pt
+matplotlib.rcParams.update({'font.size': 8})
+
+
+# In[3]:
+
+
 # Display only 3 decimal points in tables
 pd.options.display.float_format = '{:.3f}'.format
 
 
-# In[3]:
+# In[4]:
 
 
 # List of all columns in the data frame that have scores
 score_columns = ss.score_columns()
 
 
-# In[4]:
+# In[5]:
 
 
 # Load the data
@@ -43,7 +56,7 @@ data = pd.read_pickle('../data/sleep_study_data.pickle.bz2')
 data.info() # List all the columns in the data frame
 
 
-# In[5]:
+# In[6]:
 
 
 data = data[~data.index.duplicated(keep='first')] # Remove duplicate rows
@@ -51,7 +64,7 @@ data = data.drop(columns='odd_one_out_max')       # Remove unused score column
 print("%d people completed the study"%data.shape[0])
 
 
-# In[6]:
+# In[7]:
 
 
 # Remove subjects reported older than 100 or younger than 10 years of age
@@ -77,7 +90,7 @@ print("%d people after 4 stdev filter"%data.shape[0])
 data.describe()
 
 
-# In[7]:
+# In[8]:
 
 
 # Convert gender (stored as string) to M/F/Other categories
@@ -85,7 +98,7 @@ data.loc[:,'gender'] = data['gender'].cat.set_categories(['Male','Female','Other
 data.loc[:,'gender'] = data['gender'].fillna('Other')
 
 
-# In[8]:
+# In[9]:
 
 
 # Convert test scores to z-scores, calculate an "overall" score, and domain scores
@@ -93,7 +106,7 @@ all_test_scores   = data[score_columns].copy()
 all_test_z_scores = all_test_scores.apply(stats.zscore)
 
 # Calculate the three orthogonal domain scores using the factor loadings
-domain_names  = [score+"_score" for score in ss.FACTOR_NAMES]
+domain_names  = [score+"_score" for score in ss.COMPOSITE_SCORE_NAMES[:-1]]
 domain_scores = np.dot(all_test_z_scores, linalg.pinv(ss.FACTOR_LOADINGS).T)
 for i, name in enumerate(domain_names):
     data.loc[:, name] = domain_scores[:, i]
@@ -106,40 +119,40 @@ domain_names  += ['Overall_score']
 score_columns += domain_names
 
 
-# In[9]:
+# In[10]:
 
 
 # Display the factor loadings (in a table for supplementary materials)
-factor_loading_df = pd.DataFrame(ss.FACTOR_LOADINGS, index=ss.TEST_NAMES, columns=ss.FACTOR_NAMES)
+factor_loading_df = pd.DataFrame(ss.FACTOR_LOADINGS, index=ss.TEST_NAMES, columns=ss.COMPOSITE_SCORE_NAMES[:-1])
 factor_loading_df.to_excel('../CSVs/TableS3.xlsx')
 factor_loading_df
 
 
-# In[10]:
+# In[11]:
 
 
 score_summary = data[score_columns].describe().T
 score_summary.index =  [score[:-6] for score in score_columns]
-score_summary.to_excel('../CSVs/TableS4.xlsx')
+# score_summary.to_excel('../CSVs/TableS4.xlsx')
 score_summary
 
 
 # # Participant Descriptives
 
-# In[11]:
+# In[12]:
 
 
 print("Number of people older than 70 years: %d"%data[data['age_at_test']>70].shape[0])
 
 
-# In[12]:
+# In[13]:
 
 
 # Histogram and counts for gender categories
 ss.create_histogram(data, 'gender')
 
 
-# In[13]:
+# In[14]:
 
 
 # Re-order levels education (from least to most)
@@ -147,14 +160,14 @@ education_level_order = [ "None", "High School Diploma", "Bachelor's Degree",  "
 data['education'] = data['education'].cat.reorder_categories(education_level_order, ordered=True)
 
 
-# In[14]:
+# In[15]:
 
 
 # Get counts for each level of education 
 ss.create_histogram(data, 'education')
 
 
-# In[15]:
+# In[16]:
 
 
 # Re-order the categories representing frequency of anxiety-related episodes (least to most)
@@ -162,14 +175,14 @@ anxiety_level_order = ['Not during the past month', 'Less than once a week', 'On
 data['anxiety'] = data['anxiety'].cat.reorder_categories(anxiety_level_order, ordered=True)
 
 
-# In[16]:
+# In[17]:
 
 
 # Get the counts for the frequency of anxiety-related episodes
 ss.create_histogram(data, 'anxiety')
 
 
-# In[17]:
+# In[18]:
 
 
 # Re-order the frequency of depressive episodes (least to most)
@@ -177,13 +190,13 @@ depression_level_order = ['Not during the past month', 'Less than once a week', 
 data['depression'] = data['depression'].cat.reorder_categories(depression_level_order, ordered=True)
 
 
-# In[18]:
+# In[19]:
 
 
 ss.create_histogram(data, 'depression')
 
 
-# In[96]:
+# In[20]:
 
 
 # Split continuous variables into some bins, just for table purposes
@@ -195,7 +208,7 @@ data['typical_sleep_bin'] = pd.cut(data['typical_sleep_duration'], [-1,6,8,24], 
 data['prev_night_sleep_bin'] = pd.cut(data['prev_night_sleep_duration'], [-1,6,8,24], labels=sleep_bin_names)
 
 
-# In[99]:
+# In[21]:
 
 
 # Table of responses to each questionnaire item
@@ -208,7 +221,7 @@ for question in demo_questions:
 demographics.to_excel('../CSVs/TableS1.xlsx')
 
 
-# In[100]:
+# In[22]:
 
 
 demographics
@@ -216,7 +229,7 @@ demographics
 
 # ## Other Variables
 
-# In[21]:
+# In[23]:
 
 
 # Load the optional questionnaire data, select only rows (subjects)
@@ -226,7 +239,7 @@ other_qs = other_qs.reindex(data.index)
 other_qs = other_qs.reset_index()
 
 
-# In[22]:
+# In[24]:
 
 
 # Responses may be stored as "multi-select" (i.e., comma separated options)
@@ -243,7 +256,7 @@ for q in ['country_of_origin', 'languages_spoken']:
             other_qs.loc[row.index,q] = np.nan
 
 
-# In[23]:
+# In[25]:
 
 
 # Tally the counts of languages and countries, but pool responses to 
@@ -269,7 +282,7 @@ country_counts.name = "What country (or countries) did you grow up in?"
 print("'Other' countries include %d possible options"%countries_rarely_chosen.size)
 
 
-# In[24]:
+# In[26]:
 
 
 # Create a dataframe to save as an .xlsx
@@ -283,21 +296,21 @@ other_q_results
 
 # ## Distribution and Scatter Plots of Age & Sleep Durations
 
-# In[25]:
+# In[27]:
 
 
 f1a = ss.joint_plot_with_data_cloud(data, 'age_at_test', 'typical_sleep_duration', 'Age (years)', 'Typical Sleep Duration (hours)')
 f1a.savefig('../images/Figure_1a.pdf', format='pdf')
 
 
-# In[26]:
+# In[28]:
 
 
 f1b = ss.joint_plot_with_data_cloud(data, 'age_at_test', 'prev_night_sleep_duration', 'Age (years)', 'Previous Night Sleep (hours)')
 f1b.savefig('../images/Figure_1b.pdf', format='pdf')
 
 
-# In[27]:
+# In[29]:
 
 
 f1c = ss.joint_plot_with_data_cloud(data, 'prev_night_sleep_duration', 
@@ -309,7 +322,7 @@ f1c.savefig('../images/Figure_1c.pdf', format='pdf')
 
 # ### Save the final sample data (used in subsequent analysis)
 
-# In[28]:
+# In[30]:
 
 
 data.to_pickle('../data/final_sample.pickle.bz2')

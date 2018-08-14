@@ -139,7 +139,7 @@ def joint_plot_with_data_cloud(data, x_column, y_column, x_title=None, y_title=N
     z   = gaussian_kde(xy,bw_method=bw)(xy)
     fig = sns.jointplot(x_column, y_column, data=data, kind='reg', space=0,
                        marginal_kws=dict(bins=10,kde_kws=dict(bw=bw)), 
-                       annot_kws=dict(stat='r'), size=3.5)
+                       annot_kws=dict(stat='r'), size=3.0)
 
     del fig.ax_joint.collections[0]
     fig.ax_joint.scatter(data[x_column], data[y_column], c=z, cmap='viridis')
