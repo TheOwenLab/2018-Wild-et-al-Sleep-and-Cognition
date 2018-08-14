@@ -34,6 +34,9 @@ import matplotlib
 matplotlib.rcParams['pdf.fonttype'] = 42
 matplotlib.rcParams['ps.fonttype'] = 42
 
+# Default font size to 8pt
+matplotlib.rcParams.update({'font.size': 8})
+
 
 # In[3]:
 
@@ -253,5 +256,3 @@ for score_index, score_model in enumerate(estimated_delta_models):
 axs[0].set_ylabel('Score (SDs)')
 plt.tight_layout()
 
-
-# Last updated by cwild - 2018-08-13
